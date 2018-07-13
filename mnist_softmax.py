@@ -1,9 +1,10 @@
 import os
 import tensorflow as tf
 import numpy as np
+import experiments
 from tensorflow import keras
 
-# Define train() & run_experiment(). execution starts from line 000
+# Define train(). execution starts from the bottom
 def train():
     ### TRAIN MODEL
     training_epochs = 3
@@ -18,31 +19,29 @@ def train():
         keras.layers.Dense(10, activation=tf.nn.softmax)
     ])
 
-    model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=learning_rate), 
+    model.compile(optimizer=keras.optimizers.Adam(lr=learning_rate), 
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
 
     model.fit(train_images, train_labels, epochs=training_epochs, batch_size=batch_size)
 
     test_loss, test_acc = model.evaluate(test_images, test_labels)
-    print("Test accuracy: {}".format(test_acc))
+    print("Training done, test accuracy: {}".format(test_acc))
     
     ### SAVE MODEL
     keras.models.save_model(model, "./mnist.hdf5")
     return model
 
-def run_experiment(model):
-    predictions = model.predict(test_images)
-    print("EXPERIMENT")
-    
-saved_model_path = './mnist.hdf5'
+
+
+# Load MNIST dataset
 mnist = keras.datasets.mnist
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 train_images, test_images = train_images/255., test_images/255.
-    
-    
+
+saved_model_path = './mnist.hdf5'
 if not os.path.exists(saved_model_path):
     model = train()
 else:
     model = keras.models.load_model(saved_model_path)
-run_experiment(model)
+experiments.right_wrong_distinction(model, test_images, test_labels)
