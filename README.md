@@ -10,8 +10,8 @@ I tried to keep the code simple but still nasty enough to confuse you. Any sugge
 ### Version range, Dependencies
 
 -   python>=3.4
--   numpy
 -   tensorflow>=1.8
+-   numpy
 -   sklearn
 -   jupyter(optional)
 
