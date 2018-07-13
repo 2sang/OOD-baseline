@@ -1,6 +1,6 @@
 ## Overview
 
-This repository contains reproduced experiments of  
+This repository contains reproduced experiments in  
 _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks
 '_, by Hendrycks et al.  
 Built under version **tensorflow==1.8, python==3.6.**
