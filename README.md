@@ -7,11 +7,21 @@ it uses Tensorflow Keras API.
 
 I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
-#### Version range:
+### Usage
 
-**tensorflow==1.8, python==3.6.**
+```bash
+python3 mnist_softmax.py
+```
 
-#### Todo:
+### Version range, Dependencies
+
+-   python>=3.4
+-   numpy
+-   tensorflow>=1.8
+-   sklearn
+-   jupyter(optional)
+
+### Todo:
 
 -   Apply moving average to trained parameters, using tf.train.ExponentialMovingAverage()
 -   Gelu Nonlinearity
