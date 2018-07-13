@@ -5,7 +5,7 @@ _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neu
 '_, by Hendrycks et al.  
 Built under version **tensorflow==1.8, python==3.6.**
 
-I tried to keep the code simple but still nasty enough to confuse you. any suggestions or corrections are welcome.
+I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
 ### See also:
 
