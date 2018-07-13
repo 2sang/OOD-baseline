@@ -7,7 +7,7 @@ from tensorflow import keras
 # Define train(). execution starts from the bottom
 def train():
     ### TRAIN MODEL
-    training_epochs = 3
+    training_epochs = 10
     learning_rate = 0.001
     batch_size = 128
 
@@ -45,3 +45,4 @@ if not os.path.exists(saved_model_path):
 else:
     model = keras.models.load_model(saved_model_path)
 experiments.right_wrong_distinction(model, test_images, test_labels)
+#experiments.in_out_distribution_distinction(model, indist_images, outdist_images)
