@@ -3,20 +3,9 @@ import tensorflow as tf
 import numpy as np
 from tensorflow import keras
 
-mnist = keras.datasets.mnist
-(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
-train_images, test_images = train_images/255., test_images/255.
-
-if not os.path.exists("./mnist.hdf5"):
-    train()
-else:
-    load_model('mnist')
-    
-run_experiment()
-
-
+# Define train() & run_experiment(). execution starts from line 000
 def train():
-    ### TRAINING STAGE
+    ### TRAIN MODEL
     training_epochs = 3
     learning_rate = 0.001
     batch_size = 128
@@ -35,15 +24,25 @@ def train():
 
     model.fit(train_images, train_labels, epochs=training_epochs, batch_size=batch_size)
 
-    ### TEST STAGE
     test_loss, test_acc = model.evaluate(test_images, test_labels)
     print("Test accuracy: {}".format(test_acc))
     
     ### SAVE MODEL
-    keras.models.save_model(model, "mnist")
+    keras.models.save_model(model, "./mnist.hdf5")
+    return model
+
+def run_experiment(model):
+    predictions = model.predict(test_images)
+    print("EXPERIMENT")
     
-
-predictions = model.predict(test_images)
-
-def run_experiment():
-    pass
+saved_model_path = './mnist.hdf5'
+mnist = keras.datasets.mnist
+(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
+train_images, test_images = train_images/255., test_images/255.
+    
+    
+if not os.path.exists(saved_model_path):
+    model = train()
+else:
+    model = keras.models.load_model(saved_model_path)
+run_experiment(model)
