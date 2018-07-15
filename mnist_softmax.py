@@ -23,9 +23,9 @@ def train():
                 loss='sparse_categorical_crossentropy',
                 metrics=['accuracy'])
 
-    model.fit(train_images, train_labels, epochs=training_epochs, batch_size=batch_size)
+    model.fit(mnist_train_x, mnist_train_y, epochs=training_epochs, batch_size=batch_size)
 
-    test_loss, test_acc = model.evaluate(test_images, test_labels)
+    test_loss, test_acc = model.evaluate(mnist_test_x, mnist_test_y)
     print("Training done, test accuracy: {}".format(test_acc))
     
     ### SAVE MODEL
@@ -33,16 +33,20 @@ def train():
     return model
 
 
-
-# Load MNIST dataset
+# Load MNIST, FMNIST dataset
 mnist = keras.datasets.mnist
-(train_images, train_labels), (test_images, test_labels) = mnist.load_data()
-train_images, test_images = train_images/255., test_images/255.
+(mnist_train_x, mnist_train_y), (mnist_test_x, mnist_test_y) = mnist.load_data()
+mnist_train_x, mnist_test_x = mnist_train_x/255., mnist_test_x/255.
+
+fashion_mnist = keras.datasets.fashion_mnist
+(fmnist_train_x, fmnist_train_y), (fmnist_test_x, fmnist_test_y) = fashion_mnist.load_data()
+fmnist_train_x, fmnist_test_x = fmnist_train_x/255., fmnist_test_x/255.
 
 saved_model_path = './mnist.hdf5'
 if not os.path.exists(saved_model_path):
     model = train()
 else:
     model = keras.models.load_model(saved_model_path)
-experiments.right_wrong_distinction(model, test_images, test_labels)
-#experiments.in_out_distribution_distinction(model, indist_images, outdist_images)
+    
+experiments.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
+experiments.in_out_distribution_distinction(model, mnist_test_x, fmnist_test_x, "FashionMNIST")

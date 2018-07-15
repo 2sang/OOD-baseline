@@ -13,6 +13,7 @@ I tried to keep the code simple but still nasty enough to confuse you. Any sugge
 -   tensorflow>=1.8
 -   numpy
 -   sklearn
+-   h5py
 -   jupyter(optional)
 
 ### Usage
