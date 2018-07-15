@@ -15,7 +15,6 @@ def right_wrong_distinction(model, test_images, test_labels):
     accuracy = 100*np.mean(np.float32(np.equal(np.argmax(softmax_all, 1), test_labels)))
     err = 100 - accuracy
 
-    # Printing functions are taken from original repository without modifying.
     def print_result():
         print("\n[MNIST SUCCESS DETECTION]")
         print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right (mean, std) | PProb Wrong (mean, std):')
