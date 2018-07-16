@@ -1,6 +1,6 @@
 ## Overview
 
-This repository contains reproduced experiments in  
+This repository contains reproduced vision experiments in  
 _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks
 '_, by Hendrycks et al.  
 It uses Tensorflow Keras API to build model.
@@ -12,7 +12,8 @@ I tried to keep the code simple but still nasty enough to confuse you. Any sugge
 -   python>=3.4
 -   tensorflow>=1.8
 -   numpy
--   sklearn
+-   scikit-learn(sklearn)
+-   scikit-image(skimage)
 -   h5py
 -   jupyter(optional)
 

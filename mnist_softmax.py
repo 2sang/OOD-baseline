@@ -50,3 +50,6 @@ else:
     
 experiments.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
 experiments.in_out_distribution_distinction(model, mnist_test_x, fmnist_test_x, "FashionMNIST")
+print("fmnist_test_x.shape: {}".format(fmnist_test_x.shape))
+experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.normal(size=(10000, 28, 28)), "WhiteNoise")
+experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.uniform(size=(10000, 28, 28)), "UniformNoise")
