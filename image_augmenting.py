@@ -7,4 +7,3 @@ def add_noise(batch, complexity=0.5):
 def blur(img, complexity=0.5):
     image = img.reshape((-1, 28, 28))
     return gaussian(image, sigma=5*complexity).reshape((-1, 28*28))
-

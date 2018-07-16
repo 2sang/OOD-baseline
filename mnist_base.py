@@ -13,9 +13,16 @@ def train():
 
     model = keras.Sequential([
         keras.layers.Flatten(input_shape=(28, 28)),
+        keras.layers.BatchNormalization(),
         keras.layers.Dense(256, activation=tf.nn.relu),
+        
+        keras.layers.BatchNormalization(),
         keras.layers.Dense(256, activation=tf.nn.relu),
+        
+        keras.layers.BatchNormalization(),
         keras.layers.Dense(256, activation=tf.nn.relu),
+        
+        keras.layers.BatchNormalization(),
         keras.layers.Dense(10, activation=tf.nn.softmax)
     ])
 
@@ -42,14 +49,17 @@ fashion_mnist = keras.datasets.fashion_mnist
 (fmnist_train_x, fmnist_train_y), (fmnist_test_x, fmnist_test_y) = fashion_mnist.load_data()
 fmnist_train_x, fmnist_test_x = fmnist_train_x/255., fmnist_test_x/255.
 
+# Train model if no pre-trained model exists 
 saved_model_path = './mnist.hdf5'
 if not os.path.exists(saved_model_path):
     model = train()
 else:
     model = keras.models.load_model(saved_model_path)
     
+# right/wrong distinction, regard wrong examples as negative
 experiments.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
+
+# In-distribution / Out-of-distribution test, out-of-distribution samples as negative
 experiments.in_out_distribution_distinction(model, mnist_test_x, fmnist_test_x, "FashionMNIST")
-print("fmnist_test_x.shape: {}".format(fmnist_test_x.shape))
 experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.normal(size=(10000, 28, 28)), "WhiteNoise")
 experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.uniform(size=(10000, 28, 28)), "UniformNoise")
