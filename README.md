@@ -34,6 +34,7 @@ python3 mnist_auxiliary.py
 
 -   Apply moving average to trained parameters, using tf.train.ExponentialMovingAverage()
 -   Gelu Nonlinearity
+-   AUROC, AUPR Visualization web page(hopefully)
 
 ### Resources:
 
