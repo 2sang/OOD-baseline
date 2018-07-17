@@ -5,6 +5,7 @@ _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neu
 '_, by Hendrycks et al.  
 It uses Tensorflow Keras API to build blocks of model.
 
+To see references(Papers, original code), please check below resources.  
 I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
 ### Abnormality module for anomaly detection
