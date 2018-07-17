@@ -7,10 +7,10 @@ It uses Tensorflow Keras API to build model.
 
 I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
-### Auxiliary Decoder for anomaly detection
+### Abnormality module for anomaly detection
 
-<img src="./images/abnormality_module.png" width="500px" align="center"/>  
-They suggests _Auxiliary decoder_  to improve detector's  performance.
+<img src="./images/abnormality_module.png" width="600px" align="center"/>  
+The paper suggests utilizing __Anomality module__ to enhance overall performance.
 
 ### Version range, Dependencies
 
@@ -37,4 +37,5 @@ python3 mnist_auxiliary.py
 ### Resources:
 
 -   [https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136)
+-   [https://github.com/hendrycks/error-detection](https://github.com/hendrycks/error-detection) (Original repository)
 -   [https://github.com/hendrycks/error-detection](https://github.com/hendrycks/error-detection) (Original repository)
