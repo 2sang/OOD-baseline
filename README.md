@@ -10,7 +10,7 @@ I tried to keep the code simple but still nasty enough to confuse you. Any sugge
 ### Abnormality module for anomaly detection
 
 <img src="./images/abnormality_module.png" width="600px" align="center"/>  
-The paper suggests utilizing __Anomality module__ to enhance overall performance.
+The paper suggests utilizing **Anomality module** to enhance overall performance.
 
 ### Version range, Dependencies
 
