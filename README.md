@@ -3,7 +3,7 @@
 This repository contains reproduced vision experiments in  
 _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks
 '_, by Hendrycks et al.  
-It uses Tensorflow Keras API to build model.
+It uses Tensorflow Keras API to build blocks of model.
 
 I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
