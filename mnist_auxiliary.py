@@ -118,7 +118,7 @@ def train_abnormal_model(base_model):
     
     # -Dense(128)-Dense(1)
     risk_1 = Dense(128, activation='relu', name='risk_1')(merged)
-    risk_out = Dense(1, activation='relu', name='risk_out')(risk_1)
+    risk_out = Dense(1, name='risk_out')(risk_1)
     
     # Instantiate abnormality module
     aux_model = Model(image_inputs, risk_out)
@@ -146,7 +146,6 @@ def train_abnormal_model(base_model):
     tcu = chunksize_train // 4
     for (train_x, train_y), test in zip(mnist_generator(mnist_train_x, chunksize_train, mnist_train_y), 
                                         mnist_generator(mnist_test_x, chunksize_test)):
-        print("len(train_x), len(train_y), len(test): {}, {}, {}".format(len(train_x), len(train_y), len(test)))
         
         # In-distribution dataset(half of batch)
         bx0 = train_x[:tcu] # 1/6
@@ -162,28 +161,21 @@ def train_abnormal_model(base_model):
         bx2 = add_distortion_noise(bx2)
         bx3 = add_distortion_blur(bx3)
         bx4 = rotate90_if_not_zero(bx4, by4) # Need to fix
-        print(len(bx0), len(bx1), len(bx2), len(bx3), len(bx4))
         
         # Stack altogether
         bx = np.vstack((bx0, bx1, bx2, bx3, bx4))
         by = np.zeros(len(bx))
         by[:len(bx0) + len(bx1)] = 1
-        print("by.shape: {}".format(by.shape))
-        print("bx.shape: {}".format(bx.shape))
         batch = [bx, by]
     
         batches.append(batch)
         
-    aux_model.compile(optimizer='adam', loss='sparse_categorical_crossentropy')
+    aux_model.compile(optimizer='adam', loss='binary_crossentropy')
     
     for epoch in range(epochs):
         for batch in batches:
-            batch = np.array(batch)
-            print("batch.shape: {}".format(batch.shape))
-            
-            assert batch.shape == (2, batch_size)
             x, y = batch
-            aux_model.fit(x, y, batch_size=batch_size)
+            aux_model.fit(x, y, batch_size=batch_size, verbose=1)
             
         
 
