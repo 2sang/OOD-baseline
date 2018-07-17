@@ -160,7 +160,7 @@ def train_abnormal_model(base_model):
         # Make OOD samples by adding noise(see image_augmenting.py)
         bx2 = add_distortion_noise(bx2)
         bx3 = add_distortion_blur(bx3)
-        bx4 = rotate90_if_not_zero(bx4, by4) # Need to fix
+        bx4 = rotate90_if_not_zero(bx4, by4)
         
         # Stack altogether
         bx = np.vstack((bx0, bx1, bx2, bx3, bx4))
@@ -171,12 +171,22 @@ def train_abnormal_model(base_model):
         batches.append(batch)
         
     aux_model.compile(optimizer='adam', loss='binary_crossentropy')
+    aux_model.summary()
     
     for epoch in range(epochs):
         for batch in batches:
-            x, y = batch
-            aux_model.fit(x, y, batch_size=batch_size, verbose=1)
-            
+            bx, by = batch
+            aux_model.fit(bx, by, batch_size=batch_size, verbose=1)
+    
+    test_result = aux_model.evaluate(x=mnist_test_x,
+                                      y=np.ones(shape=(mnist_test_x.shape[0], 1)))
+
+    print("metric names:", aux_model.metrics_names)
+    print(test_result)
+    
+    # Save model
+    keras.models.save_model(aux_model, "./mnist_anomality.hdf5")
+    return aux_model
         
 
 
@@ -196,17 +206,18 @@ if __name__ == "__main__":
     base_model_path = './mnist_aux_base.hdf5'
     abnormal_model_path = './mnist_abnormal.hdf5'
 
+    # Build base model, if not exists
     if not os.path.exists(base_model_path):
         base_model = train_base()
     else:
         base_model = keras.models.load_model(base_model_path)
         
+    # Build abnormality module
     if not os.path.exists(abnormal_model_path):
         abnormal_model = train_abnormal_model(base_model)
     else:
         abnormal_model = keras.models.load_model(abnormal_model_path)
         
-    # experiments.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
-    # experiments.in_out_distribution_distinction(model, mnist_test_x, fmnist_test_x, "FashionMNIST")
-    # experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.normal(size=(10000, 28, 28)), "WhiteNoise")
-    # experiments.in_out_distribution_distinction(model, mnist_test_x, np.random.uniform(size=(10000, 28, 28)), "UniformNoise")
+    experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, fmnist_test_x, "FashionMNIST")
+    experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, np.random.normal(size=(10000, 28*28)), "WhiteNoise")
+    experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, np.random.uniform(size=(10000, 28*28)), "UniformNoise")

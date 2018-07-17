@@ -15,10 +15,12 @@ def add_distortion_blur(img):
 
 def rotate90_if_not_zero(batch, batch_label):
     mask = batch_label != 0
-    notzeros = batch[mask]
-    notzeros = np.rot90(notzeros.reshape((-1, 28, 28))).reshape((-1, 28*28))
+    
+    nonzeros = batch[mask]
+    nonzeros = np.rot90(nonzeros.reshape((-1, 28, 28))).reshape((-1, 28*28))
     zeros = batch[np.invert(mask)]
     zeros = add_noise(zeros, complexity=1)
-    batch = np.vstack((notzeros, zeros))
+    batch = np.vstack((nonzeros, zeros))
+    
     return batch
 
