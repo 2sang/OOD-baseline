@@ -7,6 +7,11 @@ It uses Tensorflow Keras API to build model.
 
 I tried to keep the code simple but still nasty enough to confuse you. Any suggestions or corrections are welcome.
 
+### Auxiliary Decoder for anomaly detection
+
+<img src="./images/abnormality_module.png" width="500px" align="center"/>  
+They suggests _Auxiliary decoder_  to improve detector's  performance.
+
 ### Version range, Dependencies
 
 -   python>=3.4
@@ -21,6 +26,7 @@ I tried to keep the code simple but still nasty enough to confuse you. Any sugge
 
 ```bash
 python3 mnist_softmax.py
+python3 mnist_auxiliary.py
 ```
 
 ### Todo:

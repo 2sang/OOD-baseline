@@ -26,18 +26,18 @@ def train_base():
     batch_size = 128
     
     # Base model
-    inputs = Input(shape=(input_dim, ), name='input')
-    h1 = Dense(256, activation='relu')(inputs)
-    h2 = Dense(256, activation='relu')(h1)
+    inputs = Input(shape=(input_dim, ), name='image_input')
+    h1 = Dense(256, activation='relu', name='h1')(inputs)
+    h2 = Dense(256, activation='relu', name='h2')(h1)
     
     # Softmax logits output
-    h3 = Dense(256, activation='relu')(h2)
+    h3 = Dense(256, activation='relu', name='h3')(h2)
     logits_out = Dense(n_labels, activation='softmax', name='logits_output')(h3)
     
     # Reconstruction image output
-    bottleneck = Dense(bottleneck_dim, activation='relu')(h2)
-    decode1 = Dense(256, activation='relu')(bottleneck)
-    decode2 = Dense(256, activation='relu')(decode1)
+    bottleneck = Dense(bottleneck_dim, activation='relu', name='bottleneck')(h2)
+    decode1 = Dense(256, activation='relu', name='decode1')(bottleneck)
+    decode2 = Dense(256, activation='relu', name='decode2')(decode1)
     reconstruction = Dense(input_dim, name='rec_output')(decode2)
     
     # Instantiate base model
@@ -91,7 +91,6 @@ class Merge3Ways(keras.layers.Layer):
         a1 = K.dot(h2, self.weight1)
         a2 = K.dot(logits_out, self.weight2)
         a3 = K.dot(K.square(reconstruction-x), self.weight3)
-        
         return a1 + a2 + a3
     
 
@@ -109,18 +108,16 @@ def train_abnormal_model(base_model):
     
     # Merging layer
     merged = Merge3Ways(512)([image_inputs, h2, logits_out, reconstruction])
-    risk_1 = Dense(128)(merged)
-    risk_out = Dense(1)(risk_1)
+    risk_1 = Dense(128, activation='relu', name='risk_1')(merged)
+    risk_out = Dense(1, activation='relu', name='risk_out')(risk_1)
     
-    # Instantiate aux model
-    aux_model = Model(image_inputs, risk_out, name='aux')
+    
+    aux_model = Model(image_inputs, risk_out)
+    base_model.summary()
+    aux_model.summary()
     
     # Freeze base model layers 
     
-    
-
-
-
 
 # Load MNIST, FMNIST dataset
 mnist = keras.datasets.mnist
