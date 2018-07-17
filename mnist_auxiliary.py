@@ -13,8 +13,6 @@ from tensorflow.keras.models import Model
 from tensorflow.keras.losses import mean_squared_error, sparse_categorical_crossentropy
 from image_augmenting import add_noise, add_distortion_noise, add_distortion_blur, rotate90_if_not_zero
 
-
-
 # Custom layer for merging 3 layers into.
 class Merge3Ways(keras.layers.Layer):
     
@@ -34,18 +32,22 @@ class Merge3Ways(keras.layers.Layer):
                                        shape=(shape_logits, self.output_dim))
         self.weight3 = self.add_weight(name='rec_to_merge',
                                        shape=(shape_rec, self.output_dim))
+        self.bias = self.add_weight(name='bias',
+                                    shape=(self.output_dim))
+        
         super(Merge3Ways, self).build(input_shape)
         
         
     def call(self, inputs):
+        
         x, h2, logits_out, reconstruction = inputs
         a1 = K.dot(h2, self.weight1)
         a2 = K.dot(logits_out, self.weight2)
         a3 = K.dot(K.square(reconstruction-x), self.weight3)
-        return a1 + a2 + a3
+        return (a1 + a2 + a3) + self.bias
 
 
-def train_base():
+def base_aux_model():
     
     ### TRAIN MODEL
     training_epochs = 10
