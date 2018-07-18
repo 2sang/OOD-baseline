@@ -30,8 +30,6 @@ python3 01.mnist_softmax.py # Pure softmax detector
 python3 02.mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 ```
 
-<img src="./images/result.png" width="400px" align="center"/>  
-
 ### Todo:
 
 -   Apply moving average to trained parameters, using tf.train.ExponentialMovingAverage()
@@ -42,3 +40,5 @@ python3 02.mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 
 -   [https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136)
 -   [https://github.com/hendrycks/error-detection](https://github.com/hendrycks/error-detection) (Original repository)
+
+<img src="./images/result.png" width="400px" align="center"/>
