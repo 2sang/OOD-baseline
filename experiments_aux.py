@@ -1,23 +1,24 @@
 import numpy as np
-import numpy.ma as ma
 import sklearn.metrics as sk
 
 
 def right_wrong_distinction(model, test_images, test_labels):
-    
+
     softmax_all = model.predict(test_images)
     right_all, wrong_all = split_right_wrong(softmax_all, test_labels)
-    
+
     (s_prob_all, kl_all, mean_all, var_all) = entropy_stats(softmax_all)
     (s_prob_right, kl_right, mean_right, var_right) = entropy_stats(right_all)
     (s_prob_wrong, kl_wrong, mean_wrong, var_wrong) = entropy_stats(wrong_all)
-    
-    accuracy = 100*np.mean(np.float32(np.equal(np.argmax(softmax_all, 1), test_labels)))
+
+    correct_cases = np.equal(np.argmax(softmax_all, 1), test_labels)
+    accuracy = 100 * np.mean(np.float32(correct_cases))
     err = 100 - accuracy
 
     def print_result():
         print("\n[MNIST SUCCESS DETECTION]")
-        print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right (mean, std) | PProb Wrong (mean, std):')
+        print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right\
+                (mean, std) | PProb Wrong (mean, std):')
         print(err, '|', np.mean(s_prob_all), np.std(s_prob_all), '|', np.mean(s_prob_right), np.std(s_prob_right), '|', np.mean(s_prob_wrong), np.std(s_prob_wrong))
 
         print('Success base rate (%):', round(accuracy,2), "({}/{})".format(len(right_all), len(softmax_all)))
@@ -37,7 +38,7 @@ def right_wrong_distinction(model, test_images, test_labels):
     print_result()
     
 
-def in_out_distribution_distinction(model, indist_images, outdist_images, outdist_id):
+def in_out_distinction(model, indist_images, outdist_images, outdist_id):
     
     softmax_indist = model.predict(indist_images)
     softmax_outdist = model.predict(outdist_images)

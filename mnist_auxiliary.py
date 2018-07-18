@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import os
 import numpy as np
-import experiments
+import experiments_aux as exp
 import tensorflow.keras.backend as K
 from tensorflow import keras
 from tensorflow.keras.layers import Input, Dense
@@ -82,13 +82,13 @@ def base_aux_model():
                                      'rec_output': 0.1})
 
     base_model.fit(mnist_train_x,
-                   {'logits_output': mnist_train_y,
+                   {'logits_out': mnist_train_y,
                     'rec_output': mnist_train_x},
                    epochs=training_epochs, batch_size=batch_size)
 
     # test_loss, test_acc
     test_result = base_model.evaluate(x=mnist_test_x,
-                                      y={'logits_output': mnist_test_y,
+                                      y={'logits_out': mnist_test_y,
                                          'rec_output': mnist_test_x})
 
     print("metric names:", base_model.metrics_names)
@@ -116,7 +116,7 @@ def train_abnormal_model(base_model):
 
     # -Dense(128)-Dense(1)
     risk_1 = Dense(128, activation='relu', name='risk_1')(merged)
-    risk_out = Dense(1, name='risk_out')(risk_1)
+    risk_out = Dense(1, name='risk_out', activation='sigmoid')(risk_1)
 
     # Instantiate abnormality module
     aux_model = Model(image_inputs, risk_out)
@@ -180,8 +180,9 @@ def train_abnormal_model(base_model):
             bx, by = batch
             aux_model.fit(bx, by, batch_size=batch_size, verbose=1)
 
+    len_testset = mnist_test_x.shape[0]
     test_result = aux_model.evaluate(x=mnist_test_x,
-                                     y=np.ones(shape=(mnist_test_x.shape[0], 1)))
+                                     y=np.ones(shape=(len_testset, 1)))
 
     print("metric names:", aux_model.metrics_names)
     print(test_result)
