@@ -117,7 +117,7 @@ def train_abnormal_model(base_model):
     # Instantiate abnormality module
     aux_model = Model(image_inputs, [logits_out, risk_out])
 
-    # Freeze base model layers
+    # Freeze base model layers to prevent optimization
     for l in base_model.layers:
         l.trainable = False
 

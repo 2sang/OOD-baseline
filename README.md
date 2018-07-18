@@ -26,8 +26,8 @@ The paper suggests utilizing Anomality module to enhance overall performance.
 ### Usage
 
 ```bash
-python3 mnist_softmax.py # Pure softmax detector
-python3 mnist_auxiliary.py # Anomaly detector with auxiliary decoder
+python3 01.mnist_softmax.py # Pure softmax detector
+python3 02.mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 ```
 
 ### Todo:
