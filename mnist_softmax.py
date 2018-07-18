@@ -88,7 +88,7 @@ s_prob_in_u, s_prob_out_u, kl_in_u, kl_out_u =\
                            np.random.uniform(size=(10000, 28, 28)),
                            "UniformNoise")
 
-
+# [[Will be imported next for plotting]]
 # Bind right/wrong distinction result
 sp_rw = [s_prob_right, s_prob_wrong]
 kl_rw = [kl_right, kl_wrong]
@@ -105,11 +105,11 @@ kl_iow = [kl_in_w, kl_out_w]
 sp_iou = [s_prob_in_u, s_prob_out_u]
 kl_iou = [kl_in_u, kl_out_u]
 
-softkld = {'[softmax] right/wrong': sp_rw,
-           '[softmax] in/out, MNIST/FashionMNIST': sp_iof,
-           '[softmax] in/out, MNIST/WhiteNoise': sp_iow,
-           '[softmax] in/out, MNIST/UniformNoise': sp_iou,
-           '[KLD] right/wrong': kl_rw,
-           '[KLD] in/out, MNIST/FashionMNIST': kl_iof,
-           '[KLD] in/out, MNIST/WhiteNoise': kl_iow,
-           '[KLD] in/out, MNIST/UniformNoise': kl_iou}
+softkld = [('right/wrong', sp_rw),
+           ('in/out, MNIST/FashionMNIST', sp_iof),
+           ('in/out, MNIST/WhiteNoise', sp_iow),
+           ('in/out, MNIST/UniformNoise', sp_iou),
+           ('right/wrong', kl_rw),
+           ('in/out, MNIST/FashionMNIST', kl_iof),
+           ('in/out, MNIST/WhiteNoise', kl_iow),
+           ('in/out, MNIST/UniformNoise', kl_iou)]
