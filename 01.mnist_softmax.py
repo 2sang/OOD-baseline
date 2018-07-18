@@ -66,20 +66,50 @@ else:
     model = keras.models.load_model(saved_model_path)
 
 # right/wrong distinction, regard wrong examples as negative
-exp.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
+s_prob_right, s_prob_wrong, kl_right, kl_wrong =\
+    exp.right_wrong_distinction(model, mnist_test_x, mnist_test_y)
 
 # In-Out-of-distribution test, assumes out-of-distribution samples as negative
-exp.in_out_distinction(model,
-                       mnist_test_x,
-                       fmnist_test_x,
-                       "FashionMNIST")
+s_prob_in_f, s_prob_out_f, kl_in_f, kl_out_f =\
+    exp.in_out_distinction(model,
+                           mnist_test_x,
+                           fmnist_test_x,
+                           "FashionMNIST")
 
-exp.in_out_distinction(model,
-                       mnist_test_x,
-                       np.random.normal(size=(10000, 28, 28)),
-                       "WhiteNoise")
+s_prob_in_w, s_prob_out_w, kl_in_w, kl_out_w =\
+    exp.in_out_distinction(model,
+                           mnist_test_x,
+                           np.random.normal(size=(10000, 28, 28)),
+                           "WhiteNoise")
 
-exp.in_out_distinction(model,
-                       mnist_test_x,
-                       np.random.uniform(size=(10000, 28, 28)),
-                       "UniformNoise")
+s_prob_in_u, s_prob_out_u, kl_in_u, kl_out_u =\
+    exp.in_out_distinction(model,
+                           mnist_test_x,
+                           np.random.uniform(size=(10000, 28, 28)),
+                           "UniformNoise")
+
+
+# Bind right/wrong distinction result
+sp_rw = [s_prob_right, s_prob_wrong]
+kl_rw = [kl_right, kl_wrong]
+
+# Bind in/out of distribution detecting result of MNIST-FashionMNIST
+sp_iof = [s_prob_in_f, s_prob_out_f]
+kl_iof = [kl_in_f, kl_out_f]
+
+# Bind in/out of distribution detecting result of MNIST-WhiteNoise
+sp_iow = [s_prob_in_w, s_prob_out_w]
+kl_iow = [kl_in_w, kl_out_w]
+
+# Bind in/out of distribution detecting result of MNIST-UniformNoise
+sp_iou = [s_prob_in_u, s_prob_out_u]
+kl_iou = [kl_in_u, kl_out_u]
+
+softkld = {'[softmax] right/wrong': sp_rw,
+           '[softmax] in/out, MNIST/FashionMNIST': sp_iof,
+           '[softmax] in/out, MNIST/WhiteNoise': sp_iow,
+           '[softmax] in/out, MNIST/UniformNoise': sp_iou,
+           '[KLD] right/wrong': kl_rw,
+           '[KLD] in/out, MNIST/FashionMNIST': kl_iof,
+           '[KLD] in/out, MNIST/WhiteNoise': kl_iow,
+           '[KLD] in/out, MNIST/UniformNoise': kl_iou}
