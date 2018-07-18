@@ -15,26 +15,25 @@ def right_wrong_distinction(model, test_images, test_labels):
     accuracy = 100 * np.mean(np.float32(correct_cases))
     err = 100 - accuracy
 
-    def print_result():
-        print("\n[MNIST SUCCESS DETECTION]")
-        print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right (mean, std) | PProb Wrong (mean, std):')
-        print(err, '|', np.mean(s_prob_all), np.std(s_prob_all), '|', np.mean(s_prob_right), np.std(s_prob_right), '|', np.mean(s_prob_wrong), np.std(s_prob_wrong))
+    print("\n[MNIST SUCCESS DETECTION]")
+    print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right (mean, std) | PProb Wrong (mean, std):')
+    print(err, '|', np.mean(s_prob_all), np.std(s_prob_all), '|', np.mean(s_prob_right), np.std(s_prob_right), '|', np.mean(s_prob_wrong), np.std(s_prob_wrong))
 
-        print('Success base rate (%):', round(accuracy, 2), "({}/{})".format(len(right_all), len(softmax_all)))
-        print('KL[p||u]: Right/Wrong classification distinction')
-        print_curve_info(kl_right, kl_wrong)
+    print('Success base rate (%):', round(accuracy, 2), "({}/{})".format(len(right_all), len(softmax_all)))
+    print('KL[p||u]: Right/Wrong classification distinction')
+    print_curve_info(kl_right, kl_wrong)
 
-        print('Prediction Prob: Right/Wrong classification distinction')
-        print_curve_info(s_prob_right, s_prob_wrong)
+    print('Prediction Prob: Right/Wrong classification distinction')
+    print_curve_info(s_prob_right, s_prob_wrong)
 
-        print('\nError Detection')
-        print('Error base rate (%):', round(err, 2), "({}/{})".format(len(wrong_all), len(softmax_all)))
-        print_curve_info(-kl_right, -kl_wrong, True)
+    print('\nError Detection')
+    print('Error base rate (%):', round(err, 2), "({}/{})".format(len(wrong_all), len(softmax_all)))
+    print_curve_info(-kl_right, -kl_wrong, True)
 
-        print('Prediction Prob: Right/Wrong classification distinction')
-        print_curve_info(-s_prob_right, -s_prob_wrong, True)
+    print('Prediction Prob: Right/Wrong classification distinction')
+    print_curve_info(-s_prob_right, -s_prob_wrong, True)
 
-    print_result()
+    return (s_prob_right, s_prob_wrong, kl_right, kl_wrong)
 
 
 def in_out_distinction(model, indist_images, outdist_images, outdist_id):
@@ -42,29 +41,28 @@ def in_out_distinction(model, indist_images, outdist_images, outdist_id):
     _, risk_indist = model.predict(indist_images)
     _, risk_outdist = model.predict(outdist_images)
 
-    def print_result():
-        print("\n[MNIST-{} anomaly detection]".format(outdist_id))
-        print('In-dist max softmax distribution (mean, std):')
-        print(np.mean(risk_indist), np.std(risk_indist))
+    print("\n[MNIST-{} anomaly detection]".format(outdist_id))
+    print('In-dist max softmax distribution (mean, std):')
+    print(np.mean(risk_indist), np.std(risk_indist))
 
-        print('Out-of-dist max softmax distribution(mean, std):')
-        print(np.mean(risk_outdist), np.std(risk_outdist))
+    print('Out-of-dist max softmax distribution(mean, std):')
+    print(np.mean(risk_outdist), np.std(risk_outdist))
 
-        print('\nNormality Detection')
-        print('Normality base rate (%):', round(100*indist_images.shape[0]/(
-                    outdist_images.shape[0] + indist_images.shape[0]), 2))
+    print('\nNormality Detection')
+    print('Normality base rate (%):', round(100*indist_images.shape[0]/(
+                outdist_images.shape[0] + indist_images.shape[0]), 2))
 
-        print('Prediction Prob: Normality Detection')
-        print_curve_info(risk_indist, risk_outdist)
+    print('Prediction Prob: Normality Detection')
+    print_curve_info(risk_indist, risk_outdist)
 
-        print('\nAbnormality Detection')
-        print('Abnormality base rate (%):', round(100*outdist_images.shape[0]/(
-                    outdist_images.shape[0] + indist_images.shape[0]), 2))
+    print('\nAbnormality Detection')
+    print('Abnormality base rate (%):', round(100*outdist_images.shape[0]/(
+                outdist_images.shape[0] + indist_images.shape[0]), 2))
 
-        print('Prediction Prob: Abnormality Detection')
-        print_curve_info(-risk_indist, -risk_outdist, True)
+    print('Prediction Prob: Abnormality Detection')
+    print_curve_info(-risk_indist, -risk_outdist, True)
 
-    print_result()
+    return (risk_indist, risk_outdist)
 
 
 def split_right_wrong(softmax_all, label):

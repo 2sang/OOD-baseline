@@ -41,4 +41,4 @@ python3 02.mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 -   [https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136)
 -   [https://github.com/hendrycks/error-detection](https://github.com/hendrycks/error-detection) (Original repository)
 
-<img src="./images/result.png" width="400px" align="center"/>
+<img src="./images/result.png" width="500px" align="center"/>

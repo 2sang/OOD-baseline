@@ -16,8 +16,8 @@ from noise_util import rotate90_if_not_zero
 # Custom layer for merging 3 layers into.
 class Merge3Ways(keras.layers.Layer):
 
-    def __init__(self, output_dim, **kwargs):
-        self.output_dim = output_dim
+    def __init__(self, **kwargs):
+        self.output_dim = 512
         super(Merge3Ways, self).__init__(**kwargs)
 
     def build(self, input_shape):
@@ -109,7 +109,7 @@ def train_abnormal_model(base_model):
     # Deconstruct outputs from previous base model
     h2, logits_out, reconstruction = base_model.outputs
 
-    merged = Merge3Ways(512)([image_inputs, h2, logits_out, reconstruction])
+    merged = Merge3Ways()([image_inputs, h2, logits_out, reconstruction])
 
     risk_1 = Dense(128, activation='relu', name='risk_1')(merged)
     risk_out = Dense(1, name='risk_out', activation='sigmoid')(risk_1)
@@ -221,7 +221,9 @@ if __name__ == "__main__":
     if not os.path.exists(abnormal_model_path):
         abnormal_model = train_abnormal_model(base_model)
     else:
-        abnormal_model = keras.models.load_model(abnormal_model_path)
+        # Due to the problem in loading custom layer(Merge3Ways),
+        # let's just train the model..
+        abnormal_model = train_abnormal_model(base_model)
 
     exp.right_wrong_distinction(abnormal_model,
                                 mnist_test_x,

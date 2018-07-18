@@ -15,27 +15,27 @@ def right_wrong_distinction(model, test_images, test_labels):
     accuracy = 100 * np.mean(np.float32(correct_cases))
     err = 100 - accuracy
 
-    def print_result():
-        print("\n[MNIST SUCCESS DETECTION]")
-        print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right\
-                (mean, std) | PProb Wrong (mean, std):')
-        print(err, '|', np.mean(s_prob_all), np.std(s_prob_all), '|', np.mean(s_prob_right), np.std(s_prob_right), '|', np.mean(s_prob_wrong), np.std(s_prob_wrong))
+    print("\n[MNIST SUCCESS DETECTION]")
+    print('MNIST Error (%)| Prediction Prob (mean, std) | PProb Right\
+            (mean, std) | PProb Wrong (mean, std):')
+    print(err, '|', np.mean(s_prob_all), np.std(s_prob_all), '|', np.mean(s_prob_right), np.std(s_prob_right), '|', np.mean(s_prob_wrong), np.std(s_prob_wrong))
 
-        print('Success base rate (%):', round(accuracy,2), "({}/{})".format(len(right_all), len(softmax_all)))
-        print('KL[p||u]: Right/Wrong classification distinction')
-        print_curve_info(kl_right, kl_wrong)
+    print('Success base rate (%):', round(accuracy,2), "({}/{})".format(len(right_all), len(softmax_all)))
+    print('KL[p||u]: Right/Wrong classification distinction')
+    print_curve_info(kl_right, kl_wrong)
 
-        print('Prediction Prob: Right/Wrong classification distinction')
-        print_curve_info(s_prob_right, s_prob_wrong)
+    print('Prediction Prob: Right/Wrong classification distinction')
+    print_curve_info(s_prob_right, s_prob_wrong)
 
-        print('\nError Detection')
-        print('Error base rate (%):', round(err,2), "({}/{})".format(len(wrong_all), len(softmax_all)))
-        print_curve_info(-kl_right, -kl_wrong, True)
+    print('\nError Detection')
+    print('Error base rate (%):', round(err,2), "({}/{})".format(len(wrong_all), len(softmax_all)))
+    print_curve_info(-kl_right, -kl_wrong, True)
 
-        print('Prediction Prob: Right/Wrong classification distinction')
-        print_curve_info(-s_prob_right, -s_prob_wrong, True)
+    print('Prediction Prob: Right/Wrong classification distinction')
+    print_curve_info(-s_prob_right, -s_prob_wrong, True)
+    
+    return (s_prob_right, s_prob_wrong, kl_right, kl_wrong)
 
-    print_result()
 
 
 def in_out_distinction(model, indist_images, outdist_images, outdist_id):
@@ -46,33 +46,32 @@ def in_out_distinction(model, indist_images, outdist_images, outdist_id):
     (s_prob_in, kl_in, mean_in, var_in) = entropy_stats(softmax_indist)
     (s_prob_out, kl_out, mean_out, var_out) = entropy_stats(softmax_outdist)
 
-    def print_result():
-        print("\n[MNIST-{} anomaly detection]".format(outdist_id))
-        print('In-dist max softmax distribution (mean, std):')
-        print(np.mean(s_prob_in), np.std(s_prob_in))
+    print("\n[MNIST-{} anomaly detection]".format(outdist_id))
+    print('In-dist max softmax distribution (mean, std):')
+    print(np.mean(s_prob_in), np.std(s_prob_in))
 
-        print('Out-of-dist max softmax distribution(mean, std):')
-        print(np.mean(s_prob_out), np.std(s_prob_out))
+    print('Out-of-dist max softmax distribution(mean, std):')
+    print(np.mean(s_prob_out), np.std(s_prob_out))
 
-        print('\nNormality Detection')
-        print('Normality base rate (%):', round(100*indist_images.shape[0]/(
-                    outdist_images.shape[0] + indist_images.shape[0]),2))
-        print('KL[p||u]: Normality Detection')
-        print_curve_info(kl_in, kl_out)
+    print('\nNormality Detection')
+    print('Normality base rate (%):', round(100*indist_images.shape[0]/(
+                outdist_images.shape[0] + indist_images.shape[0]),2))
+    print('KL[p||u]: Normality Detection')
+    print_curve_info(kl_in, kl_out)
 
-        print('Prediction Prob: Normality Detection')
-        print_curve_info(s_prob_in, s_prob_out)
+    print('Prediction Prob: Normality Detection')
+    print_curve_info(s_prob_in, s_prob_out)
 
-        print('\nAbnormality Detection')
-        print('Abnormality base rate (%):', round(100*outdist_images.shape[0]/(
-                    outdist_images.shape[0] + indist_images.shape[0]),2))
-        print('KL[p||u]: Abnormality Detection')
-        print_curve_info(-kl_in, -kl_out, True)
+    print('\nAbnormality Detection')
+    print('Abnormality base rate (%):', round(100*outdist_images.shape[0]/(
+                outdist_images.shape[0] + indist_images.shape[0]),2))
+    print('KL[p||u]: Abnormality Detection')
+    print_curve_info(-kl_in, -kl_out, True)
 
-        print('Prediction Prob: Abnormality Detection')
-        print_curve_info(-s_prob_in, -s_prob_out, True)
+    print('Prediction Prob: Abnormality Detection')
+    print_curve_info(-s_prob_in, -s_prob_out, True)
 
-    print_result()
+    return (s_prob_in, s_prob_out, kl_in, kl_out)
 
 
 def split_right_wrong(softmax_all, label):
@@ -95,6 +94,7 @@ def print_curve_info(safe, risky, inverse=False):
     examples = np.squeeze(np.vstack((safe, risky)))
     print('AUPR (%):', round(100*sk.average_precision_score(labels, examples), 2))
     print('AUROC (%):', round(100*sk.roc_auc_score(labels, examples), 2))
+
 
 
 def entropy_stats(softmax):
