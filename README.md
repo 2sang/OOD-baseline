@@ -30,7 +30,7 @@ python3 01.mnist_softmax.py # Pure softmax detector
 python3 02.mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 ```
 
-<img src="./images/result.png" width="500px" align="left"/>
+<img src="./images/result.png" width="500px" align="left"/>  
 
 ### Todo:
 
