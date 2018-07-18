@@ -37,7 +37,6 @@ class Merge3Ways(keras.layers.Layer):
         
         super(Merge3Ways, self).build(input_shape)
         
-        
     def call(self, inputs):
         
         x, h2, logits_out, reconstruction = inputs
