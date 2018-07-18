@@ -21,7 +21,7 @@ The paper suggests utilizing Anomality module to enhance overall performance.
 -   numpy
 -   scikit-learn
 -   h5py (for saving/loading Keras model)
--   jupyter (optional)
+-   jupyter, matplotlib (optional, for visualization)
 
 ### Usage
 
