@@ -9,8 +9,8 @@ import tensorflow.keras.backend as K
 from tensorflow import keras
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
-from image_augmenting import add_distortion_noise, add_distortion_blur
-from image_augmenting import rotate90_if_not_zero
+from noise_util import add_distortion_noise, add_distortion_blur
+from noise_util import rotate90_if_not_zero
 
 
 # Custom layer for merging 3 layers into.
