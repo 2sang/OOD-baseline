@@ -1,5 +1,7 @@
 ## Overview
 
+<img src="./images/graphs.png" width="800px" align="center"/>  
+
 This repository contains reproduced vision experiments in  
 _'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks'_,  
 by Hendrycks et al. It uses Tensorflow Keras API to build model blocks.
@@ -8,7 +10,6 @@ To see references(Papers, original code), please check below resources.
 I tried to keep the code simple but they may still nasty enough to confuse you(sorry).  
 Any suggestions or corrections are welcome.
 
-<img src="./images/graphs.png" width="700px" align="center"/>  
 
 ### Abnormality module for anomaly detection
 
