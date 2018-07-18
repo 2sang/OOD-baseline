@@ -8,6 +8,8 @@ To see references(Papers, original code), please check below resources.
 I tried to keep the code simple but they may still nasty enough to confuse you(sorry).  
 Any suggestions or corrections are welcome.
 
+<img src="./images/graphs.png" width="700px" align="center"/>  
+
 ### Abnormality module for anomaly detection
 
 <img src="./images/abnormality_module.png" width="600px" align="center"/>  
