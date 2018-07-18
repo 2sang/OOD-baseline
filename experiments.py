@@ -34,23 +34,23 @@ def right_wrong_distinction(model, test_images, test_labels):
 
         print('Prediction Prob: Right/Wrong classification distinction')
         print_curve_info(-s_prob_right, -s_prob_wrong, True)
-        
+
     print_result()
-    
+
 
 def in_out_distinction(model, indist_images, outdist_images, outdist_id):
-    
+
     softmax_indist = model.predict(indist_images)
     softmax_outdist = model.predict(outdist_images)
-    
+
     (s_prob_in, kl_in, mean_in, var_in) = entropy_stats(softmax_indist)
     (s_prob_out, kl_out, mean_out, var_out) = entropy_stats(softmax_outdist)
-    
+
     def print_result():
         print("\n[MNIST-{} anomaly detection]".format(outdist_id))
         print('In-dist max softmax distribution (mean, std):')
         print(np.mean(s_prob_in), np.std(s_prob_in))
-        
+
         print('Out-of-dist max softmax distribution(mean, std):')
         print(np.mean(s_prob_out), np.std(s_prob_out))
 
@@ -73,14 +73,14 @@ def in_out_distinction(model, indist_images, outdist_images, outdist_id):
         print_curve_info(-s_prob_in, -s_prob_out, True)
 
     print_result()
-    
-    
+
+
 def split_right_wrong(softmax_all, label):
     mask_right = np.equal(np.argmax(softmax_all, axis=1), label)
     mask_wrong = np.not_equal(np.argmax(softmax_all, axis=1), label)
     right, wrong = softmax_all[mask_right], softmax_all[mask_wrong]
     return right, wrong
-    
+
 
 def entropy_from_distribution(p, axis):
     return np.log(10.) + np.sum(p * np.log(np.abs(p) + 1e-11), axis=1, keepdims=True)

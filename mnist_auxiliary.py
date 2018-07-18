@@ -9,7 +9,6 @@ import tensorflow.keras.backend as K
 from tensorflow import keras
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
-# from tensorflow.keras.losses import mean_squared_error
 from image_augmenting import add_distortion_noise, add_distortion_blur
 from image_augmenting import rotate90_if_not_zero
 
@@ -105,21 +104,18 @@ def train_abnormal_model(base_model):
     epochs = 10
     batch_size = 128
 
-    # Need to take one array off
     image_inputs = base_model.inputs[0]
 
-    # Deconstruct previous base model outputs
+    # Deconstruct outputs from previous base model
     h2, logits_out, reconstruction = base_model.outputs
 
-    # Merging layer
     merged = Merge3Ways(512)([image_inputs, h2, logits_out, reconstruction])
 
-    # -Dense(128)-Dense(1)
     risk_1 = Dense(128, activation='relu', name='risk_1')(merged)
     risk_out = Dense(1, name='risk_out', activation='sigmoid')(risk_1)
 
     # Instantiate abnormality module
-    aux_model = Model(image_inputs, risk_out)
+    aux_model = Model(image_inputs, [logits_out, risk_out])
 
     # Freeze base model layers
     for l in base_model.layers:
@@ -172,13 +168,17 @@ def train_abnormal_model(base_model):
 
         batches.append(batch)
 
-    aux_model.compile(optimizer='adam', loss='binary_crossentropy')
+    aux_model.compile(optimizer='adam',
+                      loss={'risk_out': 'binary_crossentropy'})
     aux_model.summary()
 
     for epoch in range(epochs):
         for batch in batches:
             bx, by = batch
-            aux_model.fit(bx, by, batch_size=batch_size, verbose=1)
+            aux_model.fit(bx,
+                          {'risk_out': by},
+                          batch_size=batch_size,
+                          verbose=1)
 
     len_testset = mnist_test_x.shape[0]
     test_result = aux_model.evaluate(x=mnist_test_x,
@@ -188,7 +188,7 @@ def train_abnormal_model(base_model):
     print(test_result)
 
     # Save model
-    keras.models.save_model(aux_model, "./mnist_anomality.hdf5")
+    keras.models.save_model(aux_model, "./mnist_abnormal.hdf5")
     return aux_model
 
 
@@ -198,15 +198,15 @@ if __name__ == "__main__":
     mnist = keras.datasets.mnist
     (mnist_train_x, mnist_train_y), (mnist_test_x, mnist_test_y)\
         = mnist.load_data()
-    mnist_train_x = np.reshape(mnist_train_x, [-1, 28*28])/255.
-    mnist_test_x = np.reshape(mnist_test_x, [-1, 28*28])/255.
+    mnist_train_x = np.reshape(mnist_train_x, [-1, 28*28]) / 255.
+    mnist_test_x = np.reshape(mnist_test_x, [-1, 28*28]) / 255.
 
     # Load Fashion MNIST
     fashion_mnist = keras.datasets.fashion_mnist
     (fmnist_train_x, fmnist_train_y), (fmnist_test_x, fmnist_test_y)\
         = fashion_mnist.load_data()
-    fmnist_train_x = np.reshape(fmnist_train_x, [-1, 28*28])/255.
-    fmnist_test_x = np.reshape(fmnist_test_x, [-1, 28*28])/255.
+    fmnist_train_x = np.reshape(fmnist_train_x, [-1, 28*28]) / 255.
+    fmnist_test_x = np.reshape(fmnist_test_x, [-1, 28*28]) / 255.
 
     base_model_path = './mnist_aux_base.hdf5'
     abnormal_model_path = './mnist_abnormal.hdf5'
@@ -223,6 +223,21 @@ if __name__ == "__main__":
     else:
         abnormal_model = keras.models.load_model(abnormal_model_path)
 
-    #experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, fmnist_test_x, "FashionMNIST")
-    #experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, np.random.normal(size=(10000, 28*28)), "WhiteNoise")
-    #experiments.in_out_distribution_distinction(abnormal_model, mnist_test_x, np.random.uniform(size=(10000, 28*28)), "UniformNoise")
+    exp.right_wrong_distinction(abnormal_model,
+                                mnist_test_x,
+                                mnist_test_y,)
+
+    exp.in_out_distinction(abnormal_model,
+                           mnist_test_x,
+                           fmnist_test_x,
+                           "FashionMNIST")
+
+    exp.in_out_distinction(abnormal_model,
+                           mnist_test_x,
+                           np.random.normal(size=(10000, 28*28)),
+                           "WhiteNoise")
+
+    exp.in_out_distinction(abnormal_model,
+                           mnist_test_x,
+                           np.random.uniform(size=(10000, 28*28)),
+                           "UniformNoise")
