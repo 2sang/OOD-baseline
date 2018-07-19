@@ -1,7 +1,7 @@
 import os
 import tensorflow as tf
 import numpy as np
-import experiments as exp
+import exp_util as exp
 from tensorflow import keras
 
 

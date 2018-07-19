@@ -4,7 +4,7 @@ from __future__ import print_function
 
 import os
 import numpy as np
-import experiments_aux as exp
+import exp_aux_util as exp
 import tensorflow.keras.backend as K
 from tensorflow import keras
 from tensorflow.keras.layers import Input, Dense
