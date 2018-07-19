@@ -45,7 +45,7 @@ class Merge3Ways(keras.layers.Layer):
         return (a1 + a2 + a3) + self.bias
 
 
-def base_aux_model():
+def train_base_model():
     # TRAIN MODEL
     training_epochs = 10
     image_size = 28
@@ -213,7 +213,7 @@ if __name__ == "__main__":
 
     # Build base model if not exists
     if not os.path.exists(base_model_path):
-        base_model = base_aux_model()
+        base_model = train_base_model()
     else:
         base_model = keras.models.load_model(base_model_path)
 
