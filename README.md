@@ -1,6 +1,6 @@
-<img src="./images/graphs.png" width="850px" align="center"/>  
-
 ## Overview
+
+<img src="./images/graphs.png" width="850px" align="center"/>  
 
 This repository contains reproduced vision experiments in paper  
 [_'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks'_](https://arxiv.org/abs/1610.02136),  
