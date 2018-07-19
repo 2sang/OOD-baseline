@@ -42,4 +42,11 @@ python3 mnist_abnormality_module.py # Anomaly detector with auxiliary decoder
 -   [https://arxiv.org/abs/1610.02136](https://arxiv.org/abs/1610.02136)
 -   [https://github.com/hendrycks/error-detection](https://github.com/hendrycks/error-detection) (Original repository)
 
-<img src="./images/result.png" width="500px" align="center"/>
+## Citation
+
+    @inproceedings{hendrycks17baseline,
+      author    = {Dan Hendrycks and Kevin Gimpel},
+      title     = {A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks},
+      booktitle = {Proceedings of International Conference on Learning Representations},
+      year = {2017},
+    }
