@@ -1,13 +1,16 @@
 ## Overview
 
-<img src="./images/graphs.png" width="850px" align="center"/>  
+Do you think the neural network models have enough ability to discriminate anomaly data that comes from outside of training / testing manifold, 
+only with their softmax output scores?  
 
 This repository contains reproduced vision experiments in paper  
 [_'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks'_](https://arxiv.org/abs/1610.02136),  
-by Hendrycks et al. It uses Tensorflow Keras API to build model blocks.
+(by Hendrycks et al.), which discusses about that topic intensively.  
+It uses Tensorflow Keras API to build model blocks.
 
 To see references(Papers, original code), please check below resources.  
-Any suggestions or corrections are welcome.
+Any suggestions or corrections are welcome.  
+<img src="./images/graphs.png" width="850px" align="center"/>  
 
 ### Abnormality module for anomaly detection
 
