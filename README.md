@@ -1,7 +1,6 @@
 ## Overview
 
-Do you think the neural network models have enough ability to discriminate anomaly data that comes from outside of training / testing manifold, 
-only with their softmax output scores?  
+It is known that NN cannot discriminate anomaly data accurately which from outside of training / testing manifold only with their softmax output scores.
 
 This repository contains reproduced vision experiments in paper  
 [_'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks'_](https://arxiv.org/abs/1610.02136),  
