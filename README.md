@@ -1,6 +1,6 @@
 ## Overview
 
-It is known that NN cannot discriminate anomaly data accurately which from outside of training / testing manifold only with their softmax output scores.
+It is known that neural network cannot discriminate anomaly data(e.g. when putting alphabets to MNIST classifier) reliably using only with their softmax output scores.
 
 This repository contains reproduced vision experiments in paper  
 [_'A Baseline for Detecting Misclassified and Out-of-Distribution Examples in Neural Networks'_](https://arxiv.org/abs/1610.02136),  
